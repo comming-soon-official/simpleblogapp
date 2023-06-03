@@ -1,5 +1,5 @@
 const express = require("express");
-const postSchema = require("../models/postSchema");
+const blogSchema = require("../models/blogSchema");
 const router = express.Router();
 
 router.get("/drafts", async (req, res) => {

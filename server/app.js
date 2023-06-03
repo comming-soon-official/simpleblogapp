@@ -3,7 +3,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const blogs = require("./routes/blogs");
 const drafts = require("./routes/drafts");
-const draftSchema = require("./models/draftSchema");
 const app = express();
 const port = 3030;
 app.use(cors());

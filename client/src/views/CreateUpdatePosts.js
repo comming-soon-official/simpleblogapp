@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { produce } from "immer";
 
 import { useDebounce } from "use-debounce";
@@ -25,9 +25,10 @@ const CreateUpdatePosts = () => {
   );
   const [value] = useDebounce(postinfo, 1000); //using debounce for autosave
   const navigate = useNavigate();
-
+  const refer = useRef(false);
   useEffect(() => {
-    if (postId === "") {
+    if (postId === "" && !refer.current) {
+      refer.current = true;
       apiPostCreate(
         postinfo.title,
         postinfo.discription,

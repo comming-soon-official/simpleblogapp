@@ -2,6 +2,7 @@ import React from "react";
 import AllPosts from "../components/AllPosts";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Posts from "../components/Posts";
 
 const Home = () => {
   //getting posts from redux store
@@ -10,7 +11,8 @@ const Home = () => {
 
   return (
     <>
-      <div className="container mx-auto ">
+      <div className="container mx-auto  ">
+        <Posts />
         {/*if posts contains it shows posts or else it shows to crete posts*/}
         {allposts.length === 0 ? (
           <div className="flex flex-row justify-center">
@@ -44,7 +46,7 @@ const Home = () => {
           ))
         )}
         {/* create post button */}
-        <div className="  flex justify-end sticky bottom-24">
+        <div className="fixed bottom-24 right-24">
           <button
             onClick={() => navigate("/create")}
             className="group flex w-16 h-16 btn btn-success rounded-full hover:w-36"
