@@ -11,25 +11,22 @@ const Home = () => {
 
   return (
     <>
-      <div className="container mx-auto  ">
+      <div className="container mx-auto">
         {/*if posts contains it shows posts or else it shows to crete posts*/}
         {allposts.length === 0 ? (
-          <div className="flex flex-row justify-center">
-            <div className="card w-96 bg-base-100 shadow-xl m-2  border-2">
-              <div className="card-body">
-                <h2 className="card-title mb-2">Opps!</h2>
-                <p className="mb-2">
-                  It Seem we have No Blogs, <br />
-                  Why Don't We create New Post
-                </p>
-                <div>
-                  <button
-                    onClick={() => navigate("/create")}
-                    className="mx-2 btn btn-secondary"
-                  >
-                    Create New
-                  </button>
-                </div>
+          <div className="w-full">
+            <div className="flex flex-col justify-center items-center">
+              <h2 className="text-3xl mb-2">Opps!</h2>
+              <p className="mb-2">
+                It Seem we have No Blogs, Why Don't We create New Post
+              </p>
+              <div>
+                <button
+                  onClick={() => navigate("/create")}
+                  className="mx-2 btn btn-secondary"
+                >
+                  Create New
+                </button>
               </div>
             </div>
           </div>

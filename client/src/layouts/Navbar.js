@@ -21,7 +21,7 @@ const Navbar = () => {
         </div>
         <div className="form-control">
           <a href="/create" className="btn btn-primary">
-            Let's Create Posts
+            Let's Create Blogs
           </a>
         </div>
       </div>

@@ -9,7 +9,9 @@ const Drafts = () => {
     <div>
       {alldrafts.length === 0 ? (
         <div>
-          <h1 className="text-4xl my-5">it Seems there is no drafts</h1>
+          <h1 className="text-4xl my-5 flex justify-center">
+            it Seems there is no drafts
+          </h1>
         </div>
       ) : (
         <>

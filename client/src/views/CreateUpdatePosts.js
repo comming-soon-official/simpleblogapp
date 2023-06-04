@@ -47,6 +47,7 @@ const CreateUpdatePosts = () => {
 
   useEffect(() => {
     if (postId === "" && !refer.current) {
+      refer.current = true;
       apiPostCreate(
         postinfo.title,
         postinfo.discription,
@@ -54,13 +55,11 @@ const CreateUpdatePosts = () => {
         false
       ).then((res) => {
         if (res.success) {
-          refer.current = true;
           setPostId(() => res.success._id);
           setChangeMode(() => true);
         }
       });
     }
-    console.log(changeMode);
     if (changeMode) {
       console.log(postinfo.content);
       apiPostUpdate(

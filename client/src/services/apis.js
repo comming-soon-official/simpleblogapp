@@ -26,7 +26,6 @@ export const apiPostCreate = async (title, discription, content, published) => {
       content: content ? content : "",
       published: published,
     });
-    console.log(res.data);
     return { success: res.data.success };
   } catch (error) {
     console.log(error);
