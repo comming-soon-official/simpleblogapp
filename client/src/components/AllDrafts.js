@@ -27,7 +27,7 @@ const AllDrafts = (props) => {
             <div>
               <button
                 onClick={() => handleReadMore(id)}
-                className="mx-2 btn btn-secondary"
+                className="mx-2 btn btn-primary"
               >
                 Read More...
               </button>

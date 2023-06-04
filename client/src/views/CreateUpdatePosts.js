@@ -140,7 +140,7 @@ const CreateUpdatePosts = () => {
                 description
               </label>
               <textarea
-                onChange={handleFilldescription}
+                onChange={handleFillDescription}
                 value={postinfo.description}
                 placeholder="say something you like"
                 className="textarea textarea-bordered "

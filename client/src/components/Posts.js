@@ -12,7 +12,7 @@ const Posts = () => {
   const { id: routeParams } = useParams();
   useEffect(() => {
     // Fetching post data by id from the API
-    apiGetPostbyId(routeParams.id).then((res) => {
+    apiGetPostbyId(routeParams).then((res) => {
       console.log(res);
 
       setPostInfo(
