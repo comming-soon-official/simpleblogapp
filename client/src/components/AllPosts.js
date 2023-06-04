@@ -3,21 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { apiPostDelete } from "../services/apis";
 
 const AllPosts = (props) => {
-  const { title, discription, id, content } = props; //getting all props from Home.js
+  const { title, description, id } = props; // Extracting props
   const navigate = useNavigate();
 
-  //to update Posts sending detials in navigation params to edit page
   const handleEdit = (id) => {
-    window.location = `/update/${id}`;
+    window.location = `/update/${id}`; // Redirecting to the update page for the specific post
   };
 
-  //deleting post using id
   const handleDelete = async (id) => {
-    apiPostDelete(id);
+    apiPostDelete(id); // Making an API call to delete the post with the provided id
   };
 
   const handleReadMore = (id) => {
-    navigate(`/blogs/${id}`);
+    navigate(`/blogs/${id}`); // Navigating to the specific blog page for the given id
   };
   return (
     <>
@@ -25,7 +23,7 @@ const AllPosts = (props) => {
         <div className="card w-screen bg-base-100 shadow-xl m-2  border-2">
           <div className="card-body">
             <h2 className="card-title mb-2">{title}</h2>
-            <p>{discription}</p>
+            <p>{description}</p>
             <div className="mt-5">
               <button
                 className="mx-2 btn btn-primary"

@@ -11,21 +11,23 @@ const CreateUpdatePosts = () => {
 
   const [postinfo, setPostInfo] = useState({
     title: "",
-    discription: "",
+    description: "",
     content: "",
     published: false,
   });
   const [value] = useDebounce(postinfo, 1000);
   const refer = useRef(false);
   const updateref = useRef(false);
+
   useEffect(() => {
+    // Fetch post information by ID
     apiGetPostbyId(routerparamsId)
       .then((res) => {
         console.log(res);
         setPostInfo(
           produce((state) => {
             state.title = res.success.title;
-            state.discription = res.success.discription;
+            state.description = res.success.description;
             state.content = res.success.content;
             state.published = false;
           })
@@ -35,12 +37,14 @@ const CreateUpdatePosts = () => {
         updateref.current = true;
       });
   }, [routerparamsId]);
+
   useEffect(() => {
     if (typeof routerparamsId === "undefined" && !refer.current) {
       refer.current = true;
+      // Create a new post
       apiPostCreate(
         postinfo.title,
-        postinfo.discription,
+        postinfo.description,
         postinfo.content,
         false
       ).then((res) => {
@@ -51,10 +55,11 @@ const CreateUpdatePosts = () => {
       });
     }
     if (updateref.current) {
+      // Update an existing post
       apiPostUpdate(
         routerparamsId,
         postinfo.title,
-        postinfo.discription,
+        postinfo.description,
         postinfo.content,
         false
       );
@@ -70,21 +75,22 @@ const CreateUpdatePosts = () => {
     );
   };
 
-  const handleFillDiscription = (e) => {
-    let discription = e.target.value;
+  const handleFillDescription = (e) => {
+    let description = e.target.value; // Renamed from "discription"
     setPostInfo(
       produce((state) => {
-        state.discription = discription;
+        state.description = description;
       })
     );
   };
 
   const CreateNewPost = async () => {
     if (routerparamsId) {
+      // Update an existing post
       apiPostUpdate(
         routerparamsId,
         postinfo.title,
-        postinfo.discription,
+        postinfo.description,
         postinfo.content,
         postinfo.published
       ).then((res) => {
@@ -93,9 +99,10 @@ const CreateUpdatePosts = () => {
         }
       });
     } else {
+      // Create a new post
       apiPostCreate(
         postinfo.title,
-        postinfo.discription,
+        postinfo.description,
         postinfo.content,
         postinfo.published
       ).then((res) => {
@@ -105,6 +112,7 @@ const CreateUpdatePosts = () => {
       });
     }
   };
+
   const handleChange = (content) => {
     setPostInfo(
       produce((state) => {
@@ -129,11 +137,11 @@ const CreateUpdatePosts = () => {
             </div>
             <div className="flex flex-col">
               <label className="block mb-2 text-sm font-medium ">
-                discription
+                description
               </label>
               <textarea
-                onChange={handleFillDiscription}
-                value={postinfo.discription}
+                onChange={handleFilldescription}
+                value={postinfo.description}
                 placeholder="say something you like"
                 className="textarea textarea-bordered "
               ></textarea>

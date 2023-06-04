@@ -3,18 +3,21 @@ const blogSchema = require("../models/blogSchema");
 const router = express.Router();
 const { z } = require("zod");
 
-// creating a schema for strings
+// Creating the schema for post data validation
 const postSchema = z.object({
   id: z.string().optional(),
   title: z.string(),
-  discription: z.string(),
+  description: z.string(),
   content: z.string(),
   published: z.boolean(),
 });
 
+// Creating the schema for delete and get request validation
 const deleteSchema = z.object({
   id: z.string(),
 });
+
+//performing CRUD operations using the requests on routers
 router
   .get("/blogs", async (req, res) => {
     try {
@@ -26,12 +29,12 @@ router
   })
   .post("/blogs", async (req, res) => {
     try {
-      const { title, discription, content, published } = postSchema.parse(
+      const { title, description, content, published } = postSchema.parse(
         req.body
       );
       const post = new blogSchema({
         title: title,
-        discription: discription,
+        description: description,
         content: content,
         published: published,
       });
@@ -40,9 +43,7 @@ router
     } catch (error) {
       res.send({ error: error });
     }
-  });
-
-router
+  })
   .get("/blogs/:id", async (req, res) => {
     try {
       const { id } = deleteSchema.parse(req.params);
@@ -56,12 +57,12 @@ router
   .put("/blogs/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, discription, content, published } = postSchema.parse(
+      const { title, description, content, published } = postSchema.parse(
         req.body
       );
       const post = await blogSchema.findOne({ _id: id });
       post.title = title;
-      post.discription = discription;
+      post.description = description;
       post.content = content;
       post.published = published;
       await post.save();
@@ -69,17 +70,16 @@ router
     } catch (error) {
       res.send({ error: error });
     }
+  })
+  .delete("/blogs/:id", async (req, res) => {
+    try {
+      const { id } = deleteSchema.parse(req.params);
+      const hello = await blogSchema.findByIdAndDelete({ _id: id });
+      console.log(hello);
+      res.send({ success: "Sucessfully Deleted" });
+    } catch (error) {
+      res.send({ error: error });
+    }
   });
-
-router.delete("/blogs/:id", async (req, res) => {
-  try {
-    const { id } = deleteSchema.parse(req.params);
-    const hello = await blogSchema.findByIdAndDelete({ _id: id });
-    console.log(hello);
-    res.send({ success: "Sucessfully Deleted" });
-  } catch (error) {
-    res.send({ error: error });
-  }
-});
 
 module.exports = router;

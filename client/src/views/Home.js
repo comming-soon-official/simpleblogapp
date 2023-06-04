@@ -5,20 +5,20 @@ import { useSelector } from "react-redux";
 import Posts from "../components/Posts";
 
 const Home = () => {
-  //getting posts from redux store
+  // Get posts from the Redux store
   const allposts = useSelector((state) => state.posts.posts);
   const navigate = useNavigate();
 
   return (
     <>
       <div className="container mx-auto">
-        {/*if posts contains it shows posts or else it shows to crete posts*/}
+        {/* Check if there are no posts */}
         {allposts.length === 0 ? (
           <div className="w-full">
             <div className="flex flex-col justify-center items-center">
-              <h2 className="text-3xl mb-2">Opps!</h2>
+              <h2 className="text-3xl mb-2">Oops!</h2>
               <p className="mb-2">
-                It Seem we have No Blogs, Why Don't We create New Post
+                It seems we have no blogs. Why don't we create a new post?
               </p>
               <div>
                 <button
@@ -31,17 +31,18 @@ const Home = () => {
             </div>
           </div>
         ) : (
+          // Render all posts
           allposts.map((items, i) => (
             <AllPosts
               key={i}
               id={items._id}
               title={items.title}
-              discription={items.discription}
+              description={items.description}
               content={items.content}
             />
           ))
         )}
-        {/* create post button */}
+        {/* Create post button */}
         <div className="fixed bottom-24 right-24">
           <button
             onClick={() => navigate("/create")}

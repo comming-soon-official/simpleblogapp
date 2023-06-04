@@ -3,20 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { apiPostDelete } from "../services/apis";
 
 const AllDrafts = (props) => {
-  const { title, discription, id } = props; // getting all props from Draft.js
+  const { title, description, id } = props; // Extracting props
   const navigate = useNavigate();
 
-  //to update Posts sending detials in navigation params to edit page
   const handleEdit = (id) => {
-    window.location = `/update/${id}`;
+    window.location = `/update/${id}`; // Redirecting to the update page for the specific draft
   };
 
-  //deleting post using id
   const handleDelete = async (id) => {
-    apiPostDelete(id);
+    apiPostDelete(id); // Making an API call to delete the draft with the provided id
   };
+
   const handleReadMore = (id) => {
-    navigate(`/blogs/${id}`);
+    navigate(`/blogs/${id}`); // Navigating to the specific blog page for the given id
   };
   return (
     <>
@@ -24,7 +23,7 @@ const AllDrafts = (props) => {
         <div className="card max-w-md w-fit bg-base-100 shadow-lg border-2 m-5 md:w-[430px]">
           <div className="card-body">
             <h2 className="card-title mb-2">{title}</h2>
-            <p>{discription}</p>
+            <p>{description}</p>
             <div>
               <button
                 onClick={() => handleReadMore(id)}

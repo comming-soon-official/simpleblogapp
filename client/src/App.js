@@ -11,20 +11,21 @@ import Posts from "./components/Posts";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    //updating posts to redux
+    // Fetch all drafts from the server and update Redux store
     apidraftAll().then((res) => {
       dispatch(allDrafts(res.success));
     });
 
-    //updating drafts to redux
+    // Fetch all posts from the server and update Redux store
     apiPostAll().then((res) => {
       dispatch(allPosts(res.success));
     });
   }, []);
 
   return (
-    //assigning routes
+    // Assign routes to different components
     <BrowserRouter>
       <Navbar />
       <Routes>

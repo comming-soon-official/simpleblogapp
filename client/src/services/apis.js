@@ -2,6 +2,7 @@ import axios from "axios";
 axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 let url = `http://localhost:3030`;
 
+// API function to fetch all posts
 export const apiPostAll = async () => {
   try {
     const res = await axios.get(`${url}/blogs/`);
@@ -10,6 +11,8 @@ export const apiPostAll = async () => {
     return { error: error };
   }
 };
+
+// API function to fetch a post by ID
 export const apiGetPostbyId = async (id) => {
   try {
     const res = await axios.get(`${url}/blogs/${id}`);
@@ -18,11 +21,13 @@ export const apiGetPostbyId = async (id) => {
     return { error: error };
   }
 };
-export const apiPostCreate = async (title, discription, content, published) => {
+
+// API function to create a new post
+export const apiPostCreate = async (title, description, content, published) => {
   try {
     const res = await axios.post(`${url}/blogs/`, {
       title: title ? title : "",
-      discription: discription ? discription : "",
+      description: description ? description : "",
       content: content ? content : "",
       published: published,
     });
@@ -33,17 +38,18 @@ export const apiPostCreate = async (title, discription, content, published) => {
   }
 };
 
+// API function to update a post
 export const apiPostUpdate = async (
   id,
   title,
-  discription,
+  description,
   content,
   published
 ) => {
   console.log(
     "id" + id,
     "title" + title,
-    "dis" + discription,
+    "dis" + description,
     "con" + content,
     "pub" + published
   );
@@ -51,7 +57,7 @@ export const apiPostUpdate = async (
     const res = await axios.put(`${url}/blogs/${id}`, {
       id: id,
       title: title,
-      discription: discription,
+      description: description,
       content: content,
       published: published,
     });
@@ -62,6 +68,8 @@ export const apiPostUpdate = async (
     return { error: error };
   }
 };
+
+// API function to delete a post
 export const apiPostDelete = async (id) => {
   try {
     const res = await axios.delete(`${url}/blogs/${id}`);
@@ -75,6 +83,7 @@ export const apiPostDelete = async (id) => {
   }
 };
 
+// API function to fetch all drafts
 export const apidraftAll = async () => {
   try {
     const res = await axios.get(`${url}/drafts/`);
