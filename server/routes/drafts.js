@@ -7,8 +7,8 @@ router.get("/drafts", async (req, res) => {
   try {
     const posts = await blogSchema.find({ published: false });
     res.send({ success: posts });
-  } catch {
-    res.send({ error: "Posts not found" });
+  } catch (error) {
+    res.send({ error: error });
   }
 });
 
