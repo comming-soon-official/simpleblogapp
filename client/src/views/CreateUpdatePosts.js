@@ -1,17 +1,13 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { produce } from "immer";
-
 import { useDebounce } from "use-debounce";
-import { useLocation, useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import { useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 import { apiGetPostbyId, apiPostCreate, apiPostUpdate } from "../services/apis";
-
 const CreateUpdatePosts = () => {
-  const location = useLocation(); //using to get the state parameterd from Posts Page
-  const receivedProps = location.state; //storing values in a constant variable called receivedProps
+  const { id: routerparamsId } = useParams();
 
   const [postinfo, setPostInfo] = useState({
     title: "",
@@ -19,34 +15,28 @@ const CreateUpdatePosts = () => {
     content: "",
     published: false,
   });
-  const [changeMode, setChangeMode] = useState(false); //its to manage contnents of our editor
-  const [postId, setPostId] = useState(
-    receivedProps?.id ? receivedProps.id : ""
-  );
-  const [value] = useDebounce(postinfo, 1000); //using debounce for autosave
-  const navigate = useNavigate();
+  const [value] = useDebounce(postinfo, 1000);
   const refer = useRef(false);
-
+  const updateref = useRef(false);
   useEffect(() => {
-    //checking if value present in receivedProps it will update
-    if (receivedProps) {
-      apiGetPostbyId(receivedProps.id).then((res) => {
+    apiGetPostbyId(routerparamsId)
+      .then((res) => {
+        console.log(res);
         setPostInfo(
-          //using immerjs to make mutation simple
           produce((state) => {
             state.title = res.success.title;
             state.discription = res.success.discription;
             state.content = res.success.content;
-            state.published = res.success.published;
+            state.published = false;
           })
         );
-        setChangeMode(() => true);
+      })
+      .then(() => {
+        updateref.current = true;
       });
-    }
-  }, []);
-
+  }, [routerparamsId]);
   useEffect(() => {
-    if (postId === "" && !refer.current) {
+    if (typeof routerparamsId === "undefined" && !refer.current) {
       refer.current = true;
       apiPostCreate(
         postinfo.title,
@@ -54,27 +44,23 @@ const CreateUpdatePosts = () => {
         postinfo.content,
         false
       ).then((res) => {
+        console.log("hello");
         if (res.success) {
-          setPostId(() => res.success._id);
-          setChangeMode(() => true);
+          window.location = `/create/${res.success._id}`;
         }
       });
     }
-    if (changeMode) {
-      console.log(postinfo.content);
+    if (updateref.current) {
       apiPostUpdate(
-        postId,
+        routerparamsId,
         postinfo.title,
         postinfo.discription,
         postinfo.content,
         false
-      ).then((res) => console.log(res));
+      );
     }
   }, [value]);
 
-  //to update states that received value from posts
-
-  //to update title state from event handlers
   const handleFillTitle = (e) => {
     let title = e.target.value;
     setPostInfo(
@@ -83,8 +69,6 @@ const CreateUpdatePosts = () => {
       })
     );
   };
-
-  //to update discription state from event handlers
 
   const handleFillDiscription = (e) => {
     let discription = e.target.value;
@@ -96,11 +80,9 @@ const CreateUpdatePosts = () => {
   };
 
   const CreateNewPost = async () => {
-    console.log(postinfo.published);
-    // if receivedProps have data it will execute update function or else it will create new post
-    if (receivedProps || changeMode) {
+    if (routerparamsId) {
       apiPostUpdate(
-        postId,
+        routerparamsId,
         postinfo.title,
         postinfo.discription,
         postinfo.content,
@@ -130,14 +112,10 @@ const CreateUpdatePosts = () => {
       })
     );
   };
-
   return (
     <div className=" h-screen flex items-center justify-center">
       <div className="card w-[50%] bg-base-100 shadow-xl">
         <div className="card-body">
-          <h1 className="text-xl font-bold">
-            {receivedProps ? "Update Post" : "Create New Post"}
-          </h1>
           <div className="flex flex-col">
             <div className="flex flex-col mb-4">
               <label className="block mb-2 text-sm font-medium ">Title</label>
@@ -184,12 +162,11 @@ const CreateUpdatePosts = () => {
               theme="snow"
               value={postinfo.content}
               onChange={handleChange}
-              // modules={modules}
             />
           </div>
         </div>
         <button onClick={CreateNewPost} className="btn btn-secondary">
-          {receivedProps ? "Save Post" : "Create New Post"}
+          {"Save Post"}
         </button>
       </div>
     </div>

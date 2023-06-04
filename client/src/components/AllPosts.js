@@ -8,14 +8,7 @@ const AllPosts = (props) => {
 
   //to update Posts sending detials in navigation params to edit page
   const handleEdit = (id) => {
-    navigate("/update", {
-      state: {
-        id: id,
-        title: title,
-        discription: discription,
-        content: content,
-      },
-    });
+    window.location = `/update/${id}`;
   };
 
   //deleting post using id
