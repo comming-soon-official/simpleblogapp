@@ -12,7 +12,6 @@ const Home = () => {
   return (
     <>
       <div className="container mx-auto  ">
-        <Posts />
         {/*if posts contains it shows posts or else it shows to crete posts*/}
         {allposts.length === 0 ? (
           <div className="flex flex-row justify-center">

@@ -7,6 +7,7 @@ import Drafts from "./views/Drafts";
 import Navbar from "./layouts/Navbar";
 import { apiPostAll, apidraftAll } from "./services/apis";
 import { allDrafts, allPosts } from "./redux/postSlice";
+import Posts from "./components/Posts";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/blogs/:id" element={<Posts />} />
         <Route path="/create" element={<CreateUpdatePosts />} />
         <Route path="/update" element={<CreateUpdatePosts />} />
         <Route path="/drafts" element={<Drafts />} />

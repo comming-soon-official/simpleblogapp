@@ -9,7 +9,7 @@ const postSchema = z.object({
   title: z.string(),
   discription: z.string(),
   content: z.string(),
-  publish: z.boolean(),
+  published: z.boolean(),
 });
 
 const deleteSchema = z.object({
@@ -20,8 +20,8 @@ router
     try {
       const posts = await blogSchema.find({ published: true });
       res.send({ success: posts });
-    } catch {
-      res.send({ error: "Posts not found" });
+    } catch (error) {
+      res.send({ error: error });
     }
   })
   .post("/blogs", async (req, res) => {
@@ -37,35 +37,48 @@ router
       });
       await post.save();
       res.send({ success: post });
-    } catch {
-      res.send({ error: "Can't able to save blog" });
+    } catch (error) {
+      res.send({ error: error });
     }
   });
 
-router.put("/blogs/:id", async (req, res) => {
-  try {
-    const { id, title, discription, content, published } = postSchema.parse(
-      req.body
-    );
-    const post = await blogSchema.findOne({ _id: id });
-    post.title = title;
-    post.discription = discription;
-    post.content = content;
-    post.published = published;
-    await post.save();
-    res.send({ success: post });
-  } catch {
-    res.send({ error: "Post doesn't exist! " });
-  }
-});
+router
+  .get("/blogs/:id", async (req, res) => {
+    try {
+      const { id } = deleteSchema.parse(req.params);
+      const post = await blogSchema.findById({ _id: id });
+      res.send({ success: post });
+    } catch (error) {
+      res.send({ error: error });
+    }
+  })
+
+  .put("/blogs/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, discription, content, published } = postSchema.parse(
+        req.body
+      );
+      const post = await blogSchema.findOne({ _id: id });
+      post.title = title;
+      post.discription = discription;
+      post.content = content;
+      post.published = published;
+      await post.save();
+      res.send({ success: post });
+    } catch (error) {
+      res.send({ error: error });
+    }
+  });
+
 router.delete("/blogs/:id", async (req, res) => {
   try {
     const { id } = deleteSchema.parse(req.params);
     const hello = await blogSchema.findByIdAndDelete({ _id: id });
     console.log(hello);
     res.send({ success: "Sucessfully Deleted" });
-  } catch {
-    res.send({ error: "Post doesn't exist!" });
+  } catch (error) {
+    res.send({ error: error });
   }
 });
 

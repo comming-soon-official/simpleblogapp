@@ -17,6 +17,9 @@ const AllDrafts = (props) => {
   const handleDelete = async (id) => {
     apiPostDelete(id);
   };
+  const handleReadMore = (id) => {
+    navigate(`/blogs/${id}`);
+  };
   return (
     <>
       <div className="">
@@ -25,6 +28,12 @@ const AllDrafts = (props) => {
             <h2 className="card-title mb-2">{title}</h2>
             <p>{discription}</p>
             <div>
+              <button
+                onClick={() => handleReadMore(id)}
+                className="mx-2 btn btn-secondary"
+              >
+                Read More...
+              </button>
               <button
                 onClick={() => handleEdit(id)}
                 className="mx-2 btn btn-secondary"

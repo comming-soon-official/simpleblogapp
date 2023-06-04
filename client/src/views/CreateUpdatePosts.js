@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-import { apiPostCreate, apiPostUpdate } from "../services/apis";
+import { apiGetPostbyId, apiPostCreate, apiPostUpdate } from "../services/apis";
 
 const CreateUpdatePosts = () => {
   const location = useLocation(); //using to get the state parameterd from Posts Page
@@ -26,9 +26,27 @@ const CreateUpdatePosts = () => {
   const [value] = useDebounce(postinfo, 1000); //using debounce for autosave
   const navigate = useNavigate();
   const refer = useRef(false);
+
+  useEffect(() => {
+    //checking if value present in receivedProps it will update
+    if (receivedProps) {
+      apiGetPostbyId(receivedProps.id).then((res) => {
+        setPostInfo(
+          //using immerjs to make mutation simple
+          produce((state) => {
+            state.title = res.success.title;
+            state.discription = res.success.discription;
+            state.content = res.success.content;
+            state.published = res.success.published;
+          })
+        );
+        setChangeMode(() => true);
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (postId === "" && !refer.current) {
-      refer.current = true;
       apiPostCreate(
         postinfo.title,
         postinfo.discription,
@@ -36,36 +54,26 @@ const CreateUpdatePosts = () => {
         false
       ).then((res) => {
         if (res.success) {
+          refer.current = true;
           setPostId(() => res.success._id);
           setChangeMode(() => true);
         }
       });
     }
+    console.log(changeMode);
     if (changeMode) {
+      console.log(postinfo.content);
       apiPostUpdate(
         postId,
         postinfo.title,
         postinfo.discription,
         postinfo.content,
         false
-      );
+      ).then((res) => console.log(res));
     }
   }, [value]);
 
   //to update states that received value from posts
-  useEffect(() => {
-    //checking if value present in receivedProps it will update
-    if (receivedProps) {
-      setPostInfo(
-        //using immerjs to make mutation simple
-        produce((state) => {
-          state.title = receivedProps.title;
-          state.discription = receivedProps.discription;
-          state.content = receivedProps.content;
-        })
-      );
-    }
-  }, []);
 
   //to update title state from event handlers
   const handleFillTitle = (e) => {
@@ -89,17 +97,18 @@ const CreateUpdatePosts = () => {
   };
 
   const CreateNewPost = async () => {
+    console.log(postinfo.published);
     // if receivedProps have data it will execute update function or else it will create new post
-    if (receivedProps) {
+    if (receivedProps || changeMode) {
       apiPostUpdate(
-        receivedProps.id,
+        postId,
         postinfo.title,
         postinfo.discription,
         postinfo.content,
-        false
+        postinfo.published
       ).then((res) => {
         if (res.success) {
-          navigate("/");
+          console.log(postinfo.published);
         }
       });
     } else {
@@ -107,11 +116,10 @@ const CreateUpdatePosts = () => {
         postinfo.title,
         postinfo.discription,
         postinfo.content,
-        postinfo.published,
-        false
+        postinfo.published
       ).then((res) => {
         if (res.success) {
-          navigate("/");
+          console.log(postinfo.published);
         }
       });
     }
